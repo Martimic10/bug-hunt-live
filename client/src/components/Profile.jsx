@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 /**
  * Profile component displays:
@@ -28,7 +29,7 @@ function Profile({ playerId, onBack, onUsernameUpdate }) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`http://localhost:3000/api/profile/${playerId}`);
+      const response = await fetch(`${API_URL}/api/profile/${playerId}`);
       const data = await response.json();
 
       if (!data.success) {
@@ -81,7 +82,7 @@ function Profile({ playerId, onBack, onUsernameUpdate }) {
       setIsSavingUsername(true);
       setUsernameError('');
 
-      const response = await fetch(`http://localhost:3000/api/profile/${playerId}/username`, {
+      const response = await fetch(`${API_URL}/api/profile/${playerId}/username`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: newUsername.trim() })

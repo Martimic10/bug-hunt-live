@@ -1,8 +1,8 @@
 import { io } from 'socket.io-client';
 
 // Initialize socket connection to backend
-// Backend runs on http://localhost:3000
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
+// Use VITE_API_URL environment variable or fallback to localhost
+const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 let socket = null;
 

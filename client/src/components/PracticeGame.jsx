@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 /**
  * Practice Mode - Single player game
@@ -49,7 +50,7 @@ function PracticeGame({ username, onGameEnd }) {
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/practice/questions?count=5');
+      const response = await fetch(`${API_URL}/api/practice/questions?count=5`);
       const data = await response.json();
 
       if (!data.success) {
@@ -78,7 +79,7 @@ function PracticeGame({ username, onGameEnd }) {
     setAnswerSubmitted(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/practice/check-answer', {
+      const response = await fetch(`${API_URL}/api/practice/check-answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

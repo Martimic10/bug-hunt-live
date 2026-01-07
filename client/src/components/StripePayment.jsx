@@ -6,9 +6,10 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import { API_URL, STRIPE_PUBLISHABLE_KEY } from '../config';
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'your_publishable_key_here');
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 function CheckoutForm({ playerId, onSuccess, onCancel }) {
   const stripe = useStripe();
@@ -41,7 +42,7 @@ function CheckoutForm({ playerId, onSuccess, onCancel }) {
 
       if (paymentIntent && paymentIntent.status === 'succeeded') {
         // Payment succeeded! Upgrade the player
-        const response = await fetch('http://localhost:3000/api/payment/upgrade', {
+        const response = await fetch(`${API_URL}/api/payment/upgrade`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -102,7 +103,7 @@ function StripePayment({ playerId, onSuccess, onCancel }) {
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/payment/create-intent', {
+        const response = await fetch(`${API_URL}/api/payment/create-intent`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -20,6 +20,7 @@ import Game from './components/Game';
 import PracticeGame from './components/PracticeGame';
 import GameOver from './components/GameOver';
 import Profile from './components/Profile';
+import { API_URL } from './config';
 import './styles/App.css';
 
 /**
@@ -89,7 +90,7 @@ function App() {
       // If they have a profile token (paid user), restore their profile
       if (savedToken) {
         try {
-          const response = await fetch('http://localhost:3000/api/profile/restore', {
+          const response = await fetch(`${API_URL}/api/profile/restore`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ profileToken: savedToken })

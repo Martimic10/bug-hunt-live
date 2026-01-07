@@ -1,0 +1,5 @@
+client/
+*.md
+.git/
+.gitignore
+.env.example

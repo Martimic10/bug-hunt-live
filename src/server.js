@@ -535,8 +535,9 @@ io.on('connection', (socket) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(`\n🚀 BugHunt Live Server running on port ${PORT}`);
+const HOST = '0.0.0.0'; // Listen on all interfaces for Railway
+httpServer.listen(PORT, HOST, () => {
+  console.log(`\n🚀 BugHunt Live Server running on ${HOST}:${PORT}`);
   console.log(`   Health: http://localhost:${PORT}/health`);
   console.log(`   Stats:  http://localhost:${PORT}/api/stats\n`);
 });

@@ -19,8 +19,17 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: (origin, callback) => {
-      // Allow any localhost port in development
-      if (!origin || origin.match(/^http:\/\/localhost:\d+$/)) {
+      // Allow localhost in development and Vercel in production
+      const allowedOrigins = [
+        /^http:\/\/localhost:\d+$/,
+        'https://bug-hunt-live.vercel.app'
+      ];
+
+      if (!origin) {
+        callback(null, true);
+      } else if (allowedOrigins.some(allowed =>
+        typeof allowed === 'string' ? origin === allowed : allowed.test(origin)
+      )) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
@@ -41,8 +50,10 @@ app.use(express.json());
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  // Allow localhost on any port for development
+  // Allow localhost on any port for development and Vercel in production
   if (origin && origin.match(/^http:\/\/localhost:\d+$/)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else if (origin === 'https://bug-hunt-live.vercel.app') {
     res.header('Access-Control-Allow-Origin', origin);
   } else {
     const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';

@@ -4,6 +4,12 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const gameHandlers = require('./handlers/gameHandlers');
 const matchmakingService = require('./services/MatchmakingService');
+
+// Initialize Stripe with error checking
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.error('❌ STRIPE_SECRET_KEY is not set! Payments will not work.');
+  throw new Error('STRIPE_SECRET_KEY environment variable is required');
+}
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();

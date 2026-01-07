@@ -178,13 +178,57 @@ app.get('/api/player/:username', async (req, res) => {
   }
 });
 
+// Game Settings API (languages and difficulties)
+
+// Get available languages and difficulties
+app.get('/api/game/settings', (req, res) => {
+  try {
+    const languages = questionService.getAvailableLanguages();
+    const difficulties = questionService.getDifficulties();
+
+    res.json({
+      success: true,
+      languages,
+      difficulties
+    });
+  } catch (error) {
+    console.error('Error fetching game settings:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch settings'
+    });
+  }
+});
+
 // Practice Mode API endpoints (no Socket.io, single player)
 
-// Get random questions for practice mode
+// Get random questions for practice mode with language and difficulty
 app.get('/api/practice/questions', (req, res) => {
   try {
     const count = parseInt(req.query.count) || 5;
-    const questions = questionService.getQuestionsForMatch(Math.min(count, 10));
+    const language = req.query.language || 'javascript';
+    const difficulty = req.query.difficulty || 'medium';
+
+    // Validate language and difficulty
+    const availableLanguages = questionService.getAvailableLanguages();
+    const availableDifficulties = questionService.getDifficulties();
+
+    if (!availableLanguages.find(l => l.id === language)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid language: ${language}`
+      });
+    }
+
+    if (!availableDifficulties.find(d => d.id === difficulty)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid difficulty: ${difficulty}`
+      });
+    }
+
+    const questions = questionService.getQuestionsForMatch(Math.min(count, 10), language);
+    const timeLimit = questionService.getTimeLimit(difficulty);
 
     // Return questions without correct answers
     const questionsForClient = questions.map(q => ({
@@ -197,7 +241,9 @@ app.get('/api/practice/questions', (req, res) => {
     res.json({
       success: true,
       questions: questionsForClient,
-      timeLimit: 30 // seconds per question
+      timeLimit,
+      language,
+      difficulty
     });
   } catch (error) {
     console.error('Error fetching practice questions:', error);
@@ -208,10 +254,10 @@ app.get('/api/practice/questions', (req, res) => {
   }
 });
 
-// Check answer for practice mode (client-side scoring)
+// Check answer for practice mode (client-side scoring) with language context
 app.post('/api/practice/check-answer', (req, res) => {
   try {
-    const { questionId, answerId } = req.body;
+    const { questionId, answerId, language = 'javascript' } = req.body;
 
     if (!questionId || !answerId) {
       return res.status(400).json({
@@ -220,7 +266,7 @@ app.post('/api/practice/check-answer', (req, res) => {
       });
     }
 
-    const result = questionService.checkAnswer(questionId, answerId);
+    const result = questionService.checkAnswer(questionId, answerId, language);
 
     if (!result.isValid) {
       return res.status(404).json({

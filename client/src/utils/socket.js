@@ -47,10 +47,10 @@ export const disconnectSocket = () => {
  * Functions to emit events to backend
  */
 
-// Join matchmaking queue
-export const joinQueue = (username, profileToken = null, playerId = null) => {
+// Join matchmaking queue with preferences
+export const joinQueue = (username, profileToken = null, playerId = null, preferences = null) => {
   const socket = getSocket();
-  socket.emit('join_queue', { username, profileToken, playerId });
+  socket.emit('join_queue', { username, profileToken, playerId, preferences });
 };
 
 // Leave matchmaking queue

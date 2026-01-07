@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { joinQueue, leaveQueue, onQueueJoined } from '../utils/socket';
 import StripePayment from './StripePayment';
+import GameSettings from './GameSettings';
+import { API_URL } from '../config';
 
 /**
  * Lobby component handles:
@@ -24,10 +26,37 @@ function Lobby({
   gameMode,
   profileToken,
   playerId,
-  onPaymentComplete
+  onPaymentComplete,
+  gameSettings,
+  setGameSettings
 }) {
   const [error, setError] = useState('');
   const [showStripeCheckout, setShowStripeCheckout] = useState(false);
+  const [languageMetadata, setLanguageMetadata] = useState([]);
+  const [difficultyMetadata, setDifficultyMetadata] = useState([]);
+
+  // Fetch metadata for displaying icons
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/game/settings`);
+        const data = await response.json();
+        if (data.success) {
+          setLanguageMetadata(data.languages);
+          setDifficultyMetadata(data.difficulties);
+        }
+      } catch (err) {
+        console.error('Error fetching metadata:', err);
+      }
+    };
+    fetchMetadata();
+  }, []);
+
+  // Handle settings confirmation
+  const handleSettingsConfirm = (settings) => {
+    setGameSettings(settings);
+    setGameState('username');
+  };
 
   // Handle username submission
   const handleJoinQueue = (e) => {
@@ -47,7 +76,7 @@ function Lobby({
 
     // Check if practice mode
     if (gameMode === 'practice') {
-      // Go directly to practice game
+      // Go directly to practice game with settings
       setGameState('practice-playing');
     } else {
       // Check if user has paid for multiplayer
@@ -66,8 +95,8 @@ function Lobby({
         setGameState('lobby');
       });
 
-      // Emit join queue event with profileToken and playerId for session persistence
-      joinQueue(username.trim(), profileToken, playerId);
+      // Emit join queue event with profileToken, playerId, and preferences
+      joinQueue(username.trim(), profileToken, playerId, gameSettings);
     }
   };
 
@@ -90,7 +119,10 @@ function Lobby({
           <div className="mode-selection">
             <button
               className="mode-card practice-mode"
-              onClick={() => onModeSelect('practice')}
+              onClick={() => {
+                onModeSelect('practice');
+                setGameState('settings');
+              }}
             >
               <div>
                 <div className="mode-icon">🎯</div>
@@ -99,7 +131,7 @@ function Lobby({
               </div>
               <ul className="mode-features">
                 <li>No waiting for players</li>
-                <li>Same bug questions</li>
+                <li>Multiple languages</li>
                 <li>Track your score</li>
                 <li>Perfect for learning</li>
               </ul>
@@ -107,7 +139,10 @@ function Lobby({
 
             <button
               className="mode-card multiplayer-mode"
-              onClick={() => onModeSelect('multiplayer')}
+              onClick={() => {
+                onModeSelect('multiplayer');
+                setGameState('settings');
+              }}
             >
               <div>
                 <div className="mode-icon">⚔️</div>
@@ -125,11 +160,55 @@ function Lobby({
         </div>
       )}
 
+      {/* Game Settings Screen */}
+      {gameState === 'settings' && (
+        <GameSettings
+          onConfirm={handleSettingsConfirm}
+          onBack={() => setGameState('mode-select')}
+          initialSettings={gameSettings}
+        />
+      )}
+
       {/* Username Entry Screen */}
       {gameState === 'username' && (
         <div className="lobby-card">
           <h2>{gameMode === 'practice' ? 'Practice Mode' : 'Enter the Arena'}</h2>
           <p className="lobby-subtitle">{gameMode === 'practice' ? 'Sharpen your bug-hunting skills' : 'Choose your fighter name'}</p>
+
+          {/* Show selected settings */}
+          <div className="selected-settings">
+            <span className="setting-badge">
+              {(() => {
+                const lang = languageMetadata.find(l => l.id === gameSettings.language);
+                if (lang) {
+                  return (
+                    <>
+                      <img src={`/${lang.icon}`} alt={lang.displayName} className="setting-badge-icon" />
+                      <span>{lang.displayName}</span>
+                    </>
+                  );
+                }
+                return gameSettings.language;
+              })()}
+            </span>
+            <span className="setting-badge">
+              {(() => {
+                const diff = difficultyMetadata.find(d => d.id === gameSettings.difficulty);
+                if (diff) {
+                  return (
+                    <>
+                      <span className="setting-badge-emoji">{diff.icon}</span>
+                      <span>{diff.name}</span>
+                    </>
+                  );
+                }
+                return gameSettings.difficulty;
+              })()}
+            </span>
+            <button onClick={() => setGameState('settings')} className="btn-change-settings">
+              Change
+            </button>
+          </div>
 
           <form onSubmit={handleJoinQueue} className="username-form">
             <input
@@ -147,6 +226,14 @@ function Lobby({
             <button type="submit" className="btn btn-primary">
               {gameMode === 'practice' ? 'Start Practice' : 'Join Matchmaking'}
             </button>
+
+            <button
+              type="button"
+              onClick={() => setGameState('mode-select')}
+              className="btn btn-secondary"
+            >
+              ← Back
+            </button>
           </form>
 
           <div className="lobby-info">
@@ -154,14 +241,14 @@ function Lobby({
               <>
                 <p>🎯 Solo play mode</p>
                 <p>🐛 5 questions per game</p>
-                <p>⏱️ 30 seconds per question</p>
+                <p>⏱️ {gameSettings.difficulty === 'easy' ? '60' : gameSettings.difficulty === 'medium' ? '30' : '15'} seconds per question</p>
                 <p>🏆 100 points per correct answer</p>
               </>
             ) : (
               <>
                 <p>🎮 2-4 players per match</p>
                 <p>🐛 5 questions per game</p>
-                <p>⏱️ 30 seconds per question</p>
+                <p>⏱️ {gameSettings.difficulty === 'easy' ? '60' : gameSettings.difficulty === 'medium' ? '30' : '15'} seconds per question</p>
                 <p>🏆 100 points per correct answer</p>
               </>
             )}

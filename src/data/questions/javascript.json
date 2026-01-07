@@ -1,0 +1,502 @@
+[
+  {
+    "id": "q1",
+    "code": "function calculateTotal(items) {\n  let total = 0;\n  for (let i = 0; i <= items.length; i++) {\n    total += items[i].price;\n  }\n  return total;\n}",
+    "question": "What's the bug in this function?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Loop condition should be i < items.length"
+      },
+      {
+        "id": "b",
+        "text": "Should use forEach instead of for loop"
+      },
+      {
+        "id": "c",
+        "text": "Missing semicolon after return"
+      },
+      {
+        "id": "d",
+        "text": "Variable 'total' should be const"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Using <= causes array index out of bounds. Should be < to avoid accessing items[items.length]."
+  },
+  {
+    "id": "q2",
+    "code": "async function fetchUser(id) {\n  const response = await fetch(`/api/users/${id}`);\n  const data = response.json();\n  return data;\n}",
+    "question": "What's wrong with this async function?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Missing try-catch block"
+      },
+      {
+        "id": "b",
+        "text": "response.json() needs await"
+      },
+      {
+        "id": "c",
+        "text": "Should use then() instead of await"
+      },
+      {
+        "id": "d",
+        "text": "fetch should not be awaited"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "response.json() is async and returns a Promise, so it must be awaited."
+  },
+  {
+    "id": "q3",
+    "code": "const user = {\n  name: 'Alice',\n  age: 25\n};\nuser = { name: 'Bob', age: 30 };",
+    "question": "What error will this code throw?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "SyntaxError: Invalid assignment"
+      },
+      {
+        "id": "b",
+        "text": "TypeError: Assignment to constant variable"
+      },
+      {
+        "id": "c",
+        "text": "ReferenceError: user is not defined"
+      },
+      {
+        "id": "d",
+        "text": "No error - const objects can be reassigned"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Cannot reassign a const variable. You can modify properties, but not reassign the entire object."
+  },
+  {
+    "id": "q4",
+    "code": "function greet(name) {\n  console.log('Hello ' + name);\n  return;\n  console.log('Goodbye ' + name);\n}",
+    "question": "What's the issue with this function?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Unreachable code after return"
+      },
+      {
+        "id": "b",
+        "text": "Missing semicolon after return"
+      },
+      {
+        "id": "c",
+        "text": "Should use template literals"
+      },
+      {
+        "id": "d",
+        "text": "Function doesn't return a value"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "The second console.log will never execute because return exits the function."
+  },
+  {
+    "id": "q5",
+    "code": "const numbers = [1, 2, 3];\nconst doubled = numbers.map(num => {\n  num * 2;\n});",
+    "question": "What will 'doubled' contain?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "[2, 4, 6]"
+      },
+      {
+        "id": "b",
+        "text": "[undefined, undefined, undefined]"
+      },
+      {
+        "id": "c",
+        "text": "[1, 2, 3]"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: map is not a function"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Arrow function with {} needs explicit return. Without it, returns undefined for each element."
+  },
+  {
+    "id": "q6",
+    "code": "if (user.age = 18) {\n  console.log('User is 18');\n}",
+    "question": "What's the bug in this condition?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Should use === instead of ="
+      },
+      {
+        "id": "b",
+        "text": "age must be a number type"
+      },
+      {
+        "id": "c",
+        "text": "Missing parentheses around condition"
+      },
+      {
+        "id": "d",
+        "text": "user.age should be 'user.age'"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Single = is assignment, not comparison. This assigns 18 to user.age and always evaluates to true."
+  },
+  {
+    "id": "q7",
+    "code": "let count = 0;\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+    "question": "What will be logged to console?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "0 1 2"
+      },
+      {
+        "id": "b",
+        "text": "3 3 3"
+      },
+      {
+        "id": "c",
+        "text": "undefined undefined undefined"
+      },
+      {
+        "id": "d",
+        "text": "0 0 0"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "var has function scope, not block scope. All callbacks reference the same i, which is 3 after loop ends."
+  },
+  {
+    "id": "q8",
+    "code": "const arr = [1, 2, 3];\narr[10] = 99;\nconsole.log(arr.length);",
+    "question": "What will arr.length be?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "Error: Index out of bounds"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "JavaScript arrays automatically expand. Length becomes highest index + 1, creating empty slots."
+  },
+  {
+    "id": "q9",
+    "code": "function findMax(arr) {\n  let max = 0;\n  for (let num of arr) {\n    if (num > max) max = num;\n  }\n  return max;\n}",
+    "question": "What happens if the array contains only negative numbers?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns the largest negative number"
+      },
+      {
+        "id": "b",
+        "text": "Returns 0 (incorrect)"
+      },
+      {
+        "id": "c",
+        "text": "Returns undefined"
+      },
+      {
+        "id": "d",
+        "text": "Throws an error"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Initializing max to 0 fails for all-negative arrays. Should use arr[0] or -Infinity."
+  },
+  {
+    "id": "q10",
+    "code": "class Counter {\n  count = 0;\n  increment() {\n    setTimeout(function() {\n      this.count++;\n    }, 100);\n  }\n}",
+    "question": "What's wrong with this increment method?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "setTimeout should use setInterval"
+      },
+      {
+        "id": "b",
+        "text": "Function loses 'this' context - use arrow function"
+      },
+      {
+        "id": "c",
+        "text": "count should be private (#count)"
+      },
+      {
+        "id": "d",
+        "text": "Missing async/await"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Regular function in setTimeout loses 'this' binding. Use arrow function or .bind(this)."
+  },
+  {
+    "id": "q11",
+    "code": "const obj1 = { a: 1, b: 2 };\nconst obj2 = obj1;\nobj2.a = 99;\nconsole.log(obj1.a);",
+    "question": "What will obj1.a be?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "1"
+      },
+      {
+        "id": "b",
+        "text": "99"
+      },
+      {
+        "id": "c",
+        "text": "undefined"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: Cannot assign to read-only"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Objects are assigned by reference. obj2 and obj1 point to the same object, so changes affect both."
+  },
+  {
+    "id": "q12",
+    "code": "function divide(a, b) {\n  return a / b;\n}\nconst result = divide(10);",
+    "question": "What is the value of result?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "10"
+      },
+      {
+        "id": "b",
+        "text": "NaN"
+      },
+      {
+        "id": "c",
+        "text": "Infinity"
+      },
+      {
+        "id": "d",
+        "text": "Error: Missing argument"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Missing parameter b is undefined. 10 / undefined = NaN. Should validate or provide default value."
+  },
+  {
+    "id": "q13",
+    "code": "const str = 'hello';\nstr[0] = 'H';\nconsole.log(str);",
+    "question": "What will be logged?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Hello"
+      },
+      {
+        "id": "b",
+        "text": "hello"
+      },
+      {
+        "id": "c",
+        "text": "Hello"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: Cannot assign"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Strings are immutable in JavaScript. Character assignment fails silently (or throws in strict mode)."
+  },
+  {
+    "id": "q14",
+    "code": "const getData = () => {\n  return\n  {\n    name: 'Alice',\n    age: 25\n  };\n};",
+    "question": "What does getData() return?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "{ name: 'Alice', age: 25 }"
+      },
+      {
+        "id": "b",
+        "text": "undefined"
+      },
+      {
+        "id": "c",
+        "text": "null"
+      },
+      {
+        "id": "d",
+        "text": "SyntaxError"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "JavaScript auto-inserts semicolon after 'return', making it 'return;'. Put { on same line as return."
+  },
+  {
+    "id": "q15",
+    "code": "const nums = [1, 2, 3, 4, 5];\nconst result = nums.filter(n => n > 2)\n                   .map(n => n * 2)\n                   .reduce((a, b) => a - b);",
+    "question": "What is the final result?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "-18"
+      },
+      {
+        "id": "c",
+        "text": "-12"
+      },
+      {
+        "id": "d",
+        "text": "0"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "Filter: [3,4,5], Map: [6,8,10], Reduce: 6-8-10 = 6-8=-2, -2-10=-12."
+  },
+  {
+    "id": "q16",
+    "code": "function createButtons() {\n  for (var i = 1; i <= 3; i++) {\n    document.getElementById('btn' + i)\n      .onclick = function() { alert(i); };\n  }\n}",
+    "question": "When buttons are clicked, what value of i is alerted?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "1, 2, 3 respectively"
+      },
+      {
+        "id": "b",
+        "text": "4 for all buttons"
+      },
+      {
+        "id": "c",
+        "text": "undefined for all"
+      },
+      {
+        "id": "d",
+        "text": "0, 1, 2 respectively"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "var has function scope. All handlers reference same i, which is 4 after loop. Use let or IIFE."
+  },
+  {
+    "id": "q17",
+    "code": "const arr = [1, 2, 3];\ndelete arr[1];\nconsole.log(arr.length);",
+    "question": "What is arr.length after delete?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "2"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "undefined"
+      },
+      {
+        "id": "d",
+        "text": "Error: Cannot delete array element"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "delete creates a hole (empty slot) but doesn't change length. Use splice() to actually remove."
+  },
+  {
+    "id": "q18",
+    "code": "function sum(...args) {\n  return args.reduce((a, b) => a + b);\n}\nconst total = sum();",
+    "question": "What happens when sum() is called with no arguments?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns 0"
+      },
+      {
+        "id": "b",
+        "text": "Returns undefined"
+      },
+      {
+        "id": "c",
+        "text": "TypeError: Reduce of empty array"
+      },
+      {
+        "id": "d",
+        "text": "Returns null"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "reduce() on empty array without initial value throws error. Should provide initial: reduce((a,b)=>a+b, 0)."
+  },
+  {
+    "id": "q19",
+    "code": "const person = {\n  name: 'Alice',\n  greet: function() {\n    console.log(`Hi, I'm ${this.name}`);\n  }\n};\nsetTimeout(person.greet, 1000);",
+    "question": "What will be logged after 1 second?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Hi, I'm Alice"
+      },
+      {
+        "id": "b",
+        "text": "Hi, I'm undefined"
+      },
+      {
+        "id": "c",
+        "text": "Hi, I'm "
+      },
+      {
+        "id": "d",
+        "text": "TypeError: this.name is not defined"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Method loses 'this' when passed as callback. Use arrow function or bind: setTimeout(() => person.greet(), 1000)."
+  },
+  {
+    "id": "q20",
+    "code": "const scores = [95, 87, null, 92];\nconst average = scores.reduce((sum, score) => sum + score) / scores.length;",
+    "question": "What's the bug in this average calculation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "null is treated as 0, skewing average"
+      },
+      {
+        "id": "b",
+        "text": "Missing initial value in reduce"
+      },
+      {
+        "id": "c",
+        "text": "Should filter null before calculating"
+      },
+      {
+        "id": "d",
+        "text": "All of the above"
+      }
+    ],
+    "correctAnswer": "d",
+    "explanation": "Multiple issues: null + number = number, missing initial value, and should filter nulls for accurate average."
+  }
+]

@@ -1,0 +1,542 @@
+[
+  {
+    "id": "cpp_1",
+    "code": "int* createArray() {\n    int arr[5] = {1, 2, 3, 4, 5};\n    return arr;\n}",
+    "bugDescription": "Returning pointer to local stack variable",
+    "answers": [
+      {
+        "id": "cpp_1_a",
+        "text": "Use new[] or return std::vector/std::array",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_1_b",
+        "text": "Make arr static",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_1_c",
+        "text": "Use malloc() instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_1_d",
+        "text": "Add const keyword",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_2",
+    "code": "class MyClass {\npublic:\n    int* data;\n    MyClass(int size) {\n        data = new int[size];\n    }\n};",
+    "bugDescription": "Memory leak - no destructor to delete[] data",
+    "answers": [
+      {
+        "id": "cpp_2_a",
+        "text": "Add destructor: ~MyClass() { delete[] data; }",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_2_b",
+        "text": "Make data private",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_2_c",
+        "text": "Use malloc() instead of new",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_2_d",
+        "text": "Set data = nullptr in constructor",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_3",
+    "code": "void processString(char* str) {\n    char buffer[10];\n    strcpy(buffer, str);\n}",
+    "bugDescription": "Buffer overflow - no bounds checking",
+    "answers": [
+      {
+        "id": "cpp_3_a",
+        "text": "Use strncpy() or std::string",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_3_b",
+        "text": "Make buffer larger",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_3_c",
+        "text": "Use memcpy() instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_3_d",
+        "text": "Add null terminator only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_4",
+    "code": "int divide(int a, int b) {\n    return a / b;\n}",
+    "bugDescription": "Division by zero not handled",
+    "answers": [
+      {
+        "id": "cpp_4_a",
+        "text": "Check if (b == 0) before dividing",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_4_b",
+        "text": "Use double instead of int",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_4_c",
+        "text": "Add try-catch block",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_4_d",
+        "text": "Use modulo operator",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_5",
+    "code": "class String {\npublic:\n    String(const String& other) {\n        data = other.data;\n    }\nprivate:\n    char* data;\n};",
+    "bugDescription": "Shallow copy - both objects point to same memory",
+    "answers": [
+      {
+        "id": "cpp_5_a",
+        "text": "Deep copy: allocate new memory and copy content",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_5_b",
+        "text": "Make data public",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_5_c",
+        "text": "Delete copy constructor",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_5_d",
+        "text": "Use std::copy() only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_6",
+    "code": "int* ptr = new int(5);\nptr = new int(10);",
+    "bugDescription": "Memory leak - first allocation lost",
+    "answers": [
+      {
+        "id": "cpp_6_a",
+        "text": "Delete first allocation: delete ptr; before reassigning",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_6_b",
+        "text": "Use malloc() instead of new",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_6_c",
+        "text": "Set ptr = nullptr first",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_6_d",
+        "text": "Use smart pointers only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_7",
+    "code": "std::vector<int> vec = {1, 2, 3};\nfor (int i = 0; i <= vec.size(); i++) {\n    cout << vec[i];\n}",
+    "bugDescription": "Off-by-one error - accesses out of bounds",
+    "answers": [
+      {
+        "id": "cpp_7_a",
+        "text": "Change <= to < in loop condition",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_7_b",
+        "text": "Add more elements to vector",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_7_c",
+        "text": "Use vec.at(i) instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_7_d",
+        "text": "Start i from 1 instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_8",
+    "code": "int* getData() {\n    int* p = new int[100];\n    // ... use p ...\n    return p;\n}",
+    "bugDescription": "Memory leak - caller must delete[], but no documentation",
+    "answers": [
+      {
+        "id": "cpp_8_a",
+        "text": "Return std::unique_ptr or std::vector instead",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_8_b",
+        "text": "Delete p before returning",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_8_c",
+        "text": "Use malloc() instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_8_d",
+        "text": "Make p static",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_9",
+    "code": "class Base {\npublic:\n    void cleanup() {\n        delete this;\n    }\n};",
+    "bugDescription": "Non-virtual destructor for polymorphic base class",
+    "answers": [
+      {
+        "id": "cpp_9_a",
+        "text": "Make destructor virtual: virtual ~Base()",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_9_b",
+        "text": "Remove cleanup() method",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_9_c",
+        "text": "Make cleanup() private",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_9_d",
+        "text": "Use free() instead of delete",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_10",
+    "code": "int* arr = new int[10];\n// ... use arr ...\ndelete arr;",
+    "bugDescription": "Using delete instead of delete[] for array",
+    "answers": [
+      {
+        "id": "cpp_10_a",
+        "text": "Change to: delete[] arr;",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_10_b",
+        "text": "Use free() instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_10_c",
+        "text": "Delete in a loop",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_10_d",
+        "text": "Set arr = nullptr first",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_11",
+    "code": "void increment(int x) {\n    x++;\n}\nint main() {\n    int num = 5;\n    increment(num);\n}",
+    "bugDescription": "Pass by value - original not modified",
+    "answers": [
+      {
+        "id": "cpp_11_a",
+        "text": "Change to: void increment(int& x)",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_11_b",
+        "text": "Use pointer: int* x",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_11_c",
+        "text": "Make x static",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_11_d",
+        "text": "Return the incremented value",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_12",
+    "code": "char* getString() {\n    return \"Hello\";\n}\nvoid modify() {\n    char* s = getString();\n    s[0] = 'h';\n}",
+    "bugDescription": "Modifying string literal (undefined behavior)",
+    "answers": [
+      {
+        "id": "cpp_12_a",
+        "text": "Return const char* or use std::string",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_12_b",
+        "text": "Use strcpy() to copy first",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_12_c",
+        "text": "Check if s is null",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_12_d",
+        "text": "Use malloc() for string",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_13",
+    "code": "std::vector<int> vec;\nvec.push_back(1);\nauto it = vec.begin();\nvec.push_back(2);\ncout << *it;",
+    "bugDescription": "Iterator invalidation after vector modification",
+    "answers": [
+      {
+        "id": "cpp_13_a",
+        "text": "Refresh iterator after push_back or use indices",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_13_b",
+        "text": "Use const iterator",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_13_c",
+        "text": "Reserve space first",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_13_d",
+        "text": "Use vec.end() instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_14",
+    "code": "int arr[3];\nfor (int i = 0; i < 5; i++) {\n    arr[i] = i;\n}",
+    "bugDescription": "Array out of bounds access",
+    "answers": [
+      {
+        "id": "cpp_14_a",
+        "text": "Change loop to: i < 3 (array size)",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_14_b",
+        "text": "Use vector instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_14_c",
+        "text": "Start i from 1",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_14_d",
+        "text": "Use malloc() for array",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_15",
+    "code": "class MyClass {\npublic:\n    MyClass& operator=(const MyClass& other) {\n        data = new int(*other.data);\n        return *this;\n    }\nprivate:\n    int* data;\n};",
+    "bugDescription": "Memory leak - not deleting old data before reassigning",
+    "answers": [
+      {
+        "id": "cpp_15_a",
+        "text": "Delete old data and check for self-assignment",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_15_b",
+        "text": "Remove operator= implementation",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_15_c",
+        "text": "Use malloc() instead of new",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_15_d",
+        "text": "Make data public",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_16",
+    "code": "int getValue() {\n    int x;\n    return x;\n}",
+    "bugDescription": "Returning uninitialized variable",
+    "answers": [
+      {
+        "id": "cpp_16_a",
+        "text": "Initialize x: int x = 0;",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_16_b",
+        "text": "Make x static",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_16_c",
+        "text": "Use pointer instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_16_d",
+        "text": "Add const keyword",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_17",
+    "code": "std::string* getName() {\n    std::string name = \"John\";\n    return &name;\n}",
+    "bugDescription": "Returning address of local variable",
+    "answers": [
+      {
+        "id": "cpp_17_a",
+        "text": "Return by value or use heap allocation",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_17_b",
+        "text": "Make name static",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_17_c",
+        "text": "Use const std::string*",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_17_d",
+        "text": "Use char* instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_18",
+    "code": "void process(std::unique_ptr<int> ptr) {\n    // ...\n}\nint main() {\n    auto p = std::make_unique<int>(5);\n    process(p);\n    process(p);\n}",
+    "bugDescription": "Cannot copy unique_ptr - second call uses moved-from object",
+    "answers": [
+      {
+        "id": "cpp_18_a",
+        "text": "Use std::move(p) or pass by reference",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_18_b",
+        "text": "Use shared_ptr instead",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_18_c",
+        "text": "Create new unique_ptr each time",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_18_d",
+        "text": "Use raw pointer instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_19",
+    "code": "class Counter {\nprivate:\n    static int count;\npublic:\n    Counter() { count++; }\n};",
+    "bugDescription": "Static member declared but not defined",
+    "answers": [
+      {
+        "id": "cpp_19_a",
+        "text": "Add definition: int Counter::count = 0; in .cpp",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_19_b",
+        "text": "Remove static keyword",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_19_c",
+        "text": "Make count public",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_19_d",
+        "text": "Initialize in constructor only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "cpp_20",
+    "code": "int x = 5;\nint y = 0;\nint result = x / y--;",
+    "bugDescription": "Division by zero (y is 0 before decrement)",
+    "answers": [
+      {
+        "id": "cpp_20_a",
+        "text": "Check y != 0 before dividing or use --y",
+        "isCorrect": true
+      },
+      {
+        "id": "cpp_20_b",
+        "text": "Use float instead of int",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_20_c",
+        "text": "Initialize y to 1",
+        "isCorrect": false
+      },
+      {
+        "id": "cpp_20_d",
+        "text": "Use modulo operator instead",
+        "isCorrect": false
+      }
+    ]
+  }
+]

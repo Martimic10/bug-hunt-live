@@ -1,0 +1,56 @@
+{
+  "languages": [
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "displayName": "JavaScript",
+      "icon": "icons8-javascript-48.png",
+      "enabled": true,
+      "questionCount": 20
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "displayName": "Python",
+      "icon": "icons8-python-48.png",
+      "enabled": true,
+      "questionCount": 20
+    },
+    {
+      "id": "java",
+      "name": "Java",
+      "displayName": "Java",
+      "icon": "icons8-java-logo-48.png",
+      "enabled": true,
+      "questionCount": 20
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "displayName": "C++",
+      "icon": "icons8-c++-48.png",
+      "enabled": true,
+      "questionCount": 20
+    }
+  ],
+  "difficulties": [
+    {
+      "id": "easy",
+      "name": "Easy",
+      "timeLimit": 60,
+      "icon": "🟢"
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "timeLimit": 30,
+      "icon": "🟡"
+    },
+    {
+      "id": "hard",
+      "name": "Hard",
+      "timeLimit": 15,
+      "icon": "🔴"
+    }
+  ]
+}

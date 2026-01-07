@@ -1,0 +1,502 @@
+[
+  {
+    "id": "py1",
+    "code": "def calculate_total(items):\n    total = 0\n    for i in range(0, len(items) + 1):\n        total += items[i]['price']\n    return total",
+    "question": "What's the bug in this function?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Loop range should be range(len(items))"
+      },
+      {
+        "id": "b",
+        "text": "Should use enumerate instead"
+      },
+      {
+        "id": "c",
+        "text": "total should be initialized to None"
+      },
+      {
+        "id": "d",
+        "text": "Missing return statement"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "range(0, len(items) + 1) includes items[len(items)] which causes IndexError. Should be range(len(items))."
+  },
+  {
+    "id": "py2",
+    "code": "def add_item(item, list=[]):\n    list.append(item)\n    return list\n\nresult1 = add_item(1)\nresult2 = add_item(2)",
+    "question": "What's wrong with this function's default argument?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Should use list.extend() instead"
+      },
+      {
+        "id": "b",
+        "text": "Mutable default arguments are shared between calls"
+      },
+      {
+        "id": "c",
+        "text": "list is a reserved keyword"
+      },
+      {
+        "id": "d",
+        "text": "Missing type hints"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Mutable default arguments are created once and shared. Use list=None and list = list or [] inside."
+  },
+  {
+    "id": "py3",
+    "code": "numbers = [1, 2, 3, 4, 5]\nfor i in range(len(numbers)):\n    if numbers[i] == 3:\n        numbers.remove(numbers[i])",
+    "question": "What's the problem with this code?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Modifying list while iterating causes index issues"
+      },
+      {
+        "id": "b",
+        "text": "remove() doesn't exist for lists"
+      },
+      {
+        "id": "c",
+        "text": "Should use enumerate"
+      },
+      {
+        "id": "d",
+        "text": "Comparison should use 'is' not '=='"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Removing items while iterating by index shifts elements, potentially skipping items or causing errors."
+  },
+  {
+    "id": "py4",
+    "code": "def divide(a, b):\n    return a / b\n\nresult = divide(10, 0)",
+    "question": "What will happen when this code runs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns 0"
+      },
+      {
+        "id": "b",
+        "text": "Returns None"
+      },
+      {
+        "id": "c",
+        "text": "Raises ZeroDivisionError"
+      },
+      {
+        "id": "d",
+        "text": "Returns float('inf')"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "Division by zero raises ZeroDivisionError. Should add error handling with try/except."
+  },
+  {
+    "id": "py5",
+    "code": "class Counter:\n    count = 0\n    \n    def increment(self):\n        count += 1\n        \ncounter = Counter()\ncounter.increment()",
+    "question": "What error will this code raise?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "NameError: count is not defined"
+      },
+      {
+        "id": "b",
+        "text": "UnboundLocalError: local variable referenced before assignment"
+      },
+      {
+        "id": "c",
+        "text": "AttributeError: Counter has no attribute count"
+      },
+      {
+        "id": "d",
+        "text": "No error"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Must use self.count to access class/instance variable. count += 1 tries to modify local variable."
+  },
+  {
+    "id": "py6",
+    "code": "my_dict = {'a': 1, 'b': 2}\nfor key in my_dict:\n    if key == 'a':\n        del my_dict[key]",
+    "question": "What's wrong with this code?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "del is not allowed on dictionaries"
+      },
+      {
+        "id": "b",
+        "text": "RuntimeError: dictionary changed size during iteration"
+      },
+      {
+        "id": "c",
+        "text": "Should use my_dict.remove(key)"
+      },
+      {
+        "id": "d",
+        "text": "Comparison should use 'is' not '=='"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Cannot modify dictionary size while iterating. Create a copy or use list(my_dict.keys())."
+  },
+  {
+    "id": "py7",
+    "code": "def get_user():\n    return {\n        'name': 'Alice',\n        'age': 25\n    }\n\nuser = get_user()\nprint(user['email'])",
+    "question": "What error occurs here?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "KeyError: 'email'"
+      },
+      {
+        "id": "b",
+        "text": "AttributeError: dict has no attribute email"
+      },
+      {
+        "id": "c",
+        "text": "Returns None"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: invalid key type"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Accessing non-existent dict key raises KeyError. Use user.get('email') or check with 'email' in user."
+  },
+  {
+    "id": "py8",
+    "code": "numbers = [1, 2, 3]\nresult = map(lambda x: x * 2, numbers)\nprint(len(result))",
+    "question": "What error will this raise?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "TypeError: object of type 'map' has no len()"
+      },
+      {
+        "id": "b",
+        "text": "Returns 3"
+      },
+      {
+        "id": "c",
+        "text": "Returns 0"
+      },
+      {
+        "id": "d",
+        "text": "AttributeError: map has no attribute len"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "map() returns an iterator, not a list. Use list(result) or convert before len()."
+  },
+  {
+    "id": "py9",
+    "code": "def create_multiplier(n):\n    return lambda x: x * n\n\nmultipliers = [create_multiplier(i) for i in range(3)]\nresult = [m(10) for m in multipliers]",
+    "question": "What is the value of result?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "[0, 10, 20]"
+      },
+      {
+        "id": "b",
+        "text": "[20, 20, 20]"
+      },
+      {
+        "id": "c",
+        "text": "[10, 10, 10]"
+      },
+      {
+        "id": "d",
+        "text": "[0, 1, 2]"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "This is correct! Each lambda captures its own n value. Python closures work properly here."
+  },
+  {
+    "id": "py10",
+    "code": "x = [1, 2, 3]\ny = x\ny.append(4)\nprint(x)",
+    "question": "What does this print?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "[1, 2, 3]"
+      },
+      {
+        "id": "b",
+        "text": "[1, 2, 3, 4]"
+      },
+      {
+        "id": "c",
+        "text": "[4]"
+      },
+      {
+        "id": "d",
+        "text": "Error: x is immutable"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Lists are mutable and assigned by reference. x and y point to same list. Use y = x.copy() for separate list."
+  },
+  {
+    "id": "py11",
+    "code": "try:\n    value = int('abc')\nexcept:\n    print('Error')\nfinally:\n    print(value)",
+    "question": "What happens when this code runs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Prints 'Error' then 0"
+      },
+      {
+        "id": "b",
+        "text": "Prints 'Error' then NameError"
+      },
+      {
+        "id": "c",
+        "text": "Only prints 'Error'"
+      },
+      {
+        "id": "d",
+        "text": "ValueError is raised"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "value is never assigned because int() fails. finally block tries to print undefined variable, raising NameError."
+  },
+  {
+    "id": "py12",
+    "code": "def greet(name):\n    message = f'Hello {name}'\n    return message\n    print('Goodbye')",
+    "question": "What's the issue with this function?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "print statement is unreachable after return"
+      },
+      {
+        "id": "b",
+        "text": "f-string syntax is invalid"
+      },
+      {
+        "id": "c",
+        "text": "Missing type hints"
+      },
+      {
+        "id": "d",
+        "text": "Should use % formatting"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Code after return is unreachable dead code. Return exits the function immediately."
+  },
+  {
+    "id": "py13",
+    "code": "class Dog:\n    def __init__(self, name):\n        name = name\n\ndog = Dog('Rex')\nprint(dog.name)",
+    "question": "What error does this cause?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "AttributeError: Dog has no attribute 'name'"
+      },
+      {
+        "id": "b",
+        "text": "Prints 'Rex'"
+      },
+      {
+        "id": "c",
+        "text": "NameError: name is not defined"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: missing required argument"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "Must use self.name = name to create instance attribute. name = name just assigns to local variable."
+  },
+  {
+    "id": "py14",
+    "code": "numbers = [1, 2, 3, 4, 5]\nfiltered = filter(lambda x: x > 2, numbers)\nprint(filtered[0])",
+    "question": "What error occurs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "IndexError: list index out of range"
+      },
+      {
+        "id": "b",
+        "text": "TypeError: 'filter' object is not subscriptable"
+      },
+      {
+        "id": "c",
+        "text": "Prints 3"
+      },
+      {
+        "id": "d",
+        "text": "ValueError: filter is empty"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "filter() returns iterator, not list. Cannot use indexing. Convert to list: list(filtered)[0]."
+  },
+  {
+    "id": "py15",
+    "code": "def add_numbers(a, b):\n    return a + b\n\nresult = add_numbers('5', 3)",
+    "question": "What happens when this runs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns 8"
+      },
+      {
+        "id": "b",
+        "text": "Returns '53'"
+      },
+      {
+        "id": "c",
+        "text": "TypeError: can only concatenate str to str"
+      },
+      {
+        "id": "d",
+        "text": "Returns '8'"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "Cannot add string to int. Python doesn't do implicit type conversion. Must convert types explicitly."
+  },
+  {
+    "id": "py16",
+    "code": "x = 10\ndef modify():\n    x = x + 1\n    return x\n\nmodify()",
+    "question": "What error does this raise?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns 11"
+      },
+      {
+        "id": "b",
+        "text": "UnboundLocalError: local variable 'x' referenced before assignment"
+      },
+      {
+        "id": "c",
+        "text": "NameError: x is not defined"
+      },
+      {
+        "id": "d",
+        "text": "SyntaxError: invalid syntax"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Assignment makes x local. Must use global x or pass x as parameter to modify outer variable."
+  },
+  {
+    "id": "py17",
+    "code": "items = [1, 2, 3, 4, 5]\nfor item in items:\n    if item % 2 == 0:\n        items.remove(item)",
+    "question": "What's the problem with removing items this way?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Modifying list during iteration skips elements"
+      },
+      {
+        "id": "b",
+        "text": "remove() is not defined for lists"
+      },
+      {
+        "id": "c",
+        "text": "Should use del instead"
+      },
+      {
+        "id": "d",
+        "text": "% operator is invalid"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "When item is removed, iteration continues but indices shift, causing items to be skipped."
+  },
+  {
+    "id": "py18",
+    "code": "def get_data():\n    data = {'name': 'Alice'}\n    return data\n\nuser = get_data()\nprint(user.name)",
+    "question": "What error occurs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Prints 'Alice'"
+      },
+      {
+        "id": "b",
+        "text": "AttributeError: 'dict' object has no attribute 'name'"
+      },
+      {
+        "id": "c",
+        "text": "KeyError: 'name'"
+      },
+      {
+        "id": "d",
+        "text": "TypeError: dict is not callable"
+      }
+    ],
+    "correctAnswer": "b",
+    "explanation": "Dictionaries use bracket notation user['name'], not dot notation. Dot notation is for object attributes."
+  },
+  {
+    "id": "py19",
+    "code": "numbers = [5, 2, 8, 1, 9]\nmax_num = numbers[0]\nfor num in numbers:\n    if num > max_num:\n        max_num = num\nprint(max_num)",
+    "question": "Is there a bug in this max-finding code?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "No bug - correctly finds maximum"
+      },
+      {
+        "id": "b",
+        "text": "Should initialize max_num to 0"
+      },
+      {
+        "id": "c",
+        "text": "Should use >= instead of >"
+      },
+      {
+        "id": "d",
+        "text": "num is undefined in loop"
+      }
+    ],
+    "correctAnswer": "a",
+    "explanation": "This code is correct! Initializing to first element works for finding max, even with all negatives."
+  },
+  {
+    "id": "py20",
+    "code": "def calculate_average(scores):\n    return sum(scores) / len(scores)\n\navg = calculate_average([])",
+    "question": "What happens with an empty list?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Returns 0"
+      },
+      {
+        "id": "b",
+        "text": "Returns None"
+      },
+      {
+        "id": "c",
+        "text": "ZeroDivisionError: division by zero"
+      },
+      {
+        "id": "d",
+        "text": "ValueError: empty list"
+      }
+    ],
+    "correctAnswer": "c",
+    "explanation": "len([]) is 0, causing division by zero. Should check if list is empty before calculating."
+  }
+]

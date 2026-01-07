@@ -42,6 +42,10 @@ function App() {
   const [gameMode, setGameMode] = useState(null); // 'practice' or 'multiplayer'
   const [username, setUsername] = useState(''); // Player username
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [gameSettings, setGameSettings] = useState({
+    language: 'javascript',
+    difficulty: 'medium'
+  });
 
   // Player profile state (anonymous identity)
   const [playerId, setPlayerId] = useState(null);
@@ -314,7 +318,7 @@ function App() {
 
       <main className="app-main">
         {/* Lobby / Matchmaking */}
-        {(gameState === 'mode-select' || gameState === 'username' || gameState === 'lobby' || gameState === 'waiting' || gameState === 'payment-gate') && (
+        {(gameState === 'mode-select' || gameState === 'settings' || gameState === 'username' || gameState === 'lobby' || gameState === 'waiting' || gameState === 'payment-gate') && (
           <Lobby
             gameState={gameState}
             username={username}
@@ -330,6 +334,8 @@ function App() {
             profileToken={profileToken}
             playerId={playerId}
             onPaymentComplete={handlePaymentComplete}
+            gameSettings={gameSettings}
+            setGameSettings={setGameSettings}
           />
         )}
 
@@ -338,6 +344,7 @@ function App() {
           <PracticeGame
             username={username}
             onGameEnd={handlePracticeGameEnd}
+            settings={gameSettings}
           />
         )}
 

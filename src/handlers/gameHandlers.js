@@ -13,12 +13,18 @@ const GAME_START_COUNTDOWN = 3000; // 3 seconds before game starts
 function registerHandlers(socket, io) {
   // Player joins matchmaking queue
   socket.on('join_queue', async (data) => {
-    const { username, profileToken, playerId: clientPlayerId } = data;
+    const { username, profileToken, playerId: clientPlayerId, preferences } = data;
 
     if (!username || username.trim().length === 0) {
       socket.emit('error', { message: 'Username is required' });
       return;
     }
+
+    // Default preferences if not provided
+    const gamePreferences = {
+      language: preferences?.language || 'javascript',
+      difficulty: preferences?.difficulty || 'medium'
+    };
 
     try {
       let playerId = clientPlayerId;
@@ -51,19 +57,29 @@ function registerHandlers(socket, io) {
         hasPaid = false;
       }
 
-      // Add to queue with player ID
-      const { position } = matchmakingService.addToQueue(socket, username.trim(), playerId);
+      // Add to queue with player ID and preferences
+      const { position, queueSize, preferences: confirmedPreferences } = matchmakingService.addToQueue(
+        socket,
+        username.trim(),
+        playerId,
+        gamePreferences
+      );
 
       socket.emit('queue_joined', {
         position,
-        playersWaiting: matchmakingService.getStats().queueSize,
+        playersWaiting: queueSize,
         playerId,
         profileToken: token,
-        hasPaid
+        hasPaid,
+        preferences: confirmedPreferences
       });
 
-      // Try to create a match
-      tryStartMatch(io);
+      // Try to create a match for this preference group
+      const prefKey = matchmakingService.getPreferenceKey(
+        gamePreferences.language,
+        gamePreferences.difficulty
+      );
+      tryStartMatchForPreference(io, prefKey);
     } catch (error) {
       console.error('Error joining queue:', error);
       socket.emit('error', { message: 'Failed to join queue' });
@@ -100,8 +116,9 @@ function registerHandlers(socket, io) {
       return;
     }
 
-    // Validate answer
-    const result2 = questionService.checkAnswer(questionId, answerId);
+    // Validate answer with language context
+    const language = game.preferences?.language || 'javascript';
+    const result2 = questionService.checkAnswer(questionId, answerId, language);
     if (!result2.isValid) {
       socket.emit('error', { message: result2.error });
       return;
@@ -182,8 +199,9 @@ function handleBotAnswer(io, matchId, game, bot, questionId, answerId) {
     return;
   }
 
-  // Validate answer
-  const result = questionService.checkAnswer(questionId, answerId);
+  // Validate answer with language context
+  const language = game.preferences?.language || 'javascript';
+  const result = questionService.checkAnswer(questionId, answerId, language);
   if (!result.isValid) {
     return;
   }
@@ -219,22 +237,26 @@ function handleBotAnswer(io, matchId, game, bot, questionId, answerId) {
   }
 }
 
-// Try to start a match if enough players
-function tryStartMatch(io) {
-  if (!matchmakingService.canStartMatch()) {
+// Try to start a match for specific preference group
+function tryStartMatchForPreference(io, prefKey) {
+  if (!matchmakingService.canStartMatch(prefKey)) {
     return;
   }
 
-  const match = matchmakingService.createMatch(2, 4);
+  const match = matchmakingService.createMatch(prefKey, 2, 4);
   if (!match) {
     return;
   }
 
-  const { matchId, players } = match;
+  const { matchId, players, preferences } = match;
   const game = matchmakingService.getGame(matchId);
 
-  // Get questions for this match
-  game.questions = questionService.getQuestionsForMatch(QUESTIONS_PER_GAME);
+  // Get questions for this match's language
+  game.questions = questionService.getQuestionsForMatch(QUESTIONS_PER_GAME, preferences.language);
+
+  // Get time limit based on difficulty
+  const timeLimit = questionService.getTimeLimit(preferences.difficulty);
+  game.questionTimeLimit = timeLimit * 1000; // Convert to milliseconds
 
   // Create Socket.io room
   players.forEach(player => {
@@ -250,7 +272,8 @@ function tryStartMatch(io) {
     players: players.map(p => ({
       id: p.id,
       username: p.username
-    }))
+    })),
+    preferences
   });
 
   // Start game after countdown
@@ -259,17 +282,29 @@ function tryStartMatch(io) {
   }, GAME_START_COUNTDOWN);
 }
 
+// Legacy function - kept for backward compatibility
+function tryStartMatch(io) {
+  // Default to javascript:medium for backward compatibility
+  tryStartMatchForPreference(io, 'javascript:medium');
+}
+
 // Start the game
 function startGame(io, matchId, game) {
   game.status = 'in_progress';
   game.startedAt = Date.now();
 
-  console.log(`[Game ${matchId}] Starting game with ${game.players.size} players`);
+  // Use game-specific time limit or default
+  const timeLimit = game.questionTimeLimit || QUESTION_TIME_LIMIT;
+  const language = game.preferences?.language || 'javascript';
+  const difficulty = game.preferences?.difficulty || 'medium';
+
+  console.log(`[Game ${matchId}] Starting game with ${game.players.size} players (${language}/${difficulty})`);
 
   // Notify players game is starting
   io.to(`match-${matchId}`).emit('game_start', {
     totalQuestions: game.questions.length,
-    questionTimeLimit: QUESTION_TIME_LIMIT / 1000
+    questionTimeLimit: timeLimit / 1000,
+    preferences: game.preferences
   });
 
   // Send first question
@@ -479,8 +514,15 @@ function startBotMatch(io, matchId) {
     return;
   }
 
-  // Get questions for this match
-  game.questions = questionService.getQuestionsForMatch(QUESTIONS_PER_GAME);
+  // Get preferences for this match
+  const preferences = game.preferences || { language: 'javascript', difficulty: 'medium' };
+
+  // Get questions for this match's language
+  game.questions = questionService.getQuestionsForMatch(QUESTIONS_PER_GAME, preferences.language);
+
+  // Get time limit based on difficulty
+  const timeLimit = questionService.getTimeLimit(preferences.difficulty);
+  game.questionTimeLimit = timeLimit * 1000; // Convert to milliseconds
 
   // Create Socket.io room (only for human player, bots don't need sockets)
   const players = Array.from(game.players.values());
@@ -499,7 +541,8 @@ function startBotMatch(io, matchId) {
     players: players.map(p => ({
       id: p.id,
       username: p.username
-    }))
+    })),
+    preferences
   });
 
   // Start game after countdown

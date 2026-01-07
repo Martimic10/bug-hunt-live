@@ -1,0 +1,168 @@
+.game-settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  padding: 20px;
+}
+
+.game-settings-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-settings-card h2 {
+  margin: 0 0 4px 0;
+  color: var(--text-color);
+  font-size: 24px;
+  text-align: center;
+}
+
+.settings-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin: 0 0 24px 0;
+  font-size: 13px;
+}
+
+.setting-group {
+  margin-bottom: 24px;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 15px;
+}
+
+.language-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.language-option, .difficulty-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.language-option:hover, .difficulty-option:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 166, 255, 0.2);
+}
+
+.language-option.selected, .difficulty-option.selected {
+  background: rgba(88, 166, 255, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+.language-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.difficulty-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.language-info, .difficulty-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.language-name, .difficulty-name {
+  font-weight: 600;
+  color: #e6edf3;
+  font-size: 15px;
+}
+
+.question-count, .time-limit {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.settings-actions .btn {
+  flex: 1;
+}
+
+.error-message {
+  color: var(--error-color);
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid var(--error-color);
+  border-radius: 6px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(88, 166, 255, 0.2);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .game-settings-card {
+    padding: 24px;
+  }
+
+  .game-settings-card h2 {
+    font-size: 24px;
+  }
+
+  .language-option, .difficulty-option {
+    padding: 12px 16px;
+  }
+
+  .language-icon, .difficulty-icon {
+    font-size: 24px;
+  }
+
+  .settings-actions {
+    flex-direction: column-reverse;
+  }
+}

@@ -6,7 +6,7 @@ import { API_URL } from '../config';
  * No Socket.io, all state managed locally
  * Fetches questions from API, tracks score client-side
  */
-function PracticeGame({ username, onGameEnd }) {
+function PracticeGame({ username, onGameEnd, settings = { language: 'javascript', difficulty: 'medium' } }) {
   // Practice game state
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -46,11 +46,13 @@ function PracticeGame({ username, onGameEnd }) {
     return () => clearInterval(timer);
   }, [currentQuestion, answerSubmitted, loading]);
 
-  // Fetch questions from API
+  // Fetch questions from API with language and difficulty
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/api/practice/questions?count=5`);
+      const response = await fetch(
+        `${API_URL}/api/practice/questions?count=5&language=${settings.language}&difficulty=${settings.difficulty}`
+      );
       const data = await response.json();
 
       if (!data.success) {
@@ -58,6 +60,7 @@ function PracticeGame({ username, onGameEnd }) {
       }
 
       setQuestions(data.questions);
+      setTimeRemaining(data.timeLimit); // Use time limit from server based on difficulty
       setLoading(false);
     } catch (err) {
       console.error('Error fetching questions:', err);
@@ -84,7 +87,8 @@ function PracticeGame({ username, onGameEnd }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           questionId: currentQuestion.id,
-          answerId: selectedAnswer
+          answerId: selectedAnswer,
+          language: settings.language
         })
       });
 
@@ -188,7 +192,7 @@ function PracticeGame({ username, onGameEnd }) {
         <div className="game-main">
           {/* Practice Mode Badge */}
           <div className="practice-badge">
-            🎯 Practice Mode - Solo Play
+            🎯 Practice Mode - {settings.language === 'javascript' ? '🟨 JavaScript' : '🐍 Python'} ({settings.difficulty === 'easy' ? '🟢 Easy' : settings.difficulty === 'medium' ? '🟡 Medium' : '🔴 Hard'})
           </div>
 
           {/* Question Header */}

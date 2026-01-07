@@ -1,0 +1,542 @@
+[
+  {
+    "id": "java_1",
+    "code": "public class Calculator {\n    public int divide(int a, int b) {\n        return a / b;\n    }\n}",
+    "bugDescription": "Division by zero not handled",
+    "answers": [
+      {
+        "id": "java_1_a",
+        "text": "Add null check for parameters",
+        "isCorrect": false
+      },
+      {
+        "id": "java_1_b",
+        "text": "Add check: if (b == 0) throw ArithmeticException",
+        "isCorrect": true
+      },
+      {
+        "id": "java_1_c",
+        "text": "Change return type to double",
+        "isCorrect": false
+      },
+      {
+        "id": "java_1_d",
+        "text": "Use BigDecimal instead of int",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_2",
+    "code": "public class StringCompare {\n    public boolean isEqual(String a, String b) {\n        return a == b;\n    }\n}",
+    "bugDescription": "String comparison using == instead of .equals()",
+    "answers": [
+      {
+        "id": "java_2_a",
+        "text": "Use a.equals(b) for content comparison",
+        "isCorrect": true
+      },
+      {
+        "id": "java_2_b",
+        "text": "Convert both to integers first",
+        "isCorrect": false
+      },
+      {
+        "id": "java_2_c",
+        "text": "Use === operator instead",
+        "isCorrect": false
+      },
+      {
+        "id": "java_2_d",
+        "text": "Add null check only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_3",
+    "code": "public class LoopModify {\n    public void removeEvens(List<Integer> nums) {\n        for (Integer num : nums) {\n            if (num % 2 == 0) {\n                nums.remove(num);\n            }\n        }\n    }\n}",
+    "bugDescription": "ConcurrentModificationException - modifying list during iteration",
+    "answers": [
+      {
+        "id": "java_3_a",
+        "text": "Use Iterator.remove() instead",
+        "isCorrect": true
+      },
+      {
+        "id": "java_3_b",
+        "text": "Add synchronized block",
+        "isCorrect": false
+      },
+      {
+        "id": "java_3_c",
+        "text": "Use ArrayList instead of List",
+        "isCorrect": false
+      },
+      {
+        "id": "java_3_d",
+        "text": "Check if num is null first",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_4",
+    "code": "public class FileReader {\n    public String readFile(String path) {\n        FileInputStream fis = new FileInputStream(path);\n        return new String(fis.readAllBytes());\n    }\n}",
+    "bugDescription": "Resource leak - FileInputStream never closed",
+    "answers": [
+      {
+        "id": "java_4_a",
+        "text": "Use try-with-resources statement",
+        "isCorrect": true
+      },
+      {
+        "id": "java_4_b",
+        "text": "Add throws IOException to method",
+        "isCorrect": false
+      },
+      {
+        "id": "java_4_c",
+        "text": "Use BufferedReader instead",
+        "isCorrect": false
+      },
+      {
+        "id": "java_4_d",
+        "text": "Set fis = null at end",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_5",
+    "code": "public class Counter {\n    private int count = 0;\n    \n    public void increment() {\n        count++;\n    }\n}",
+    "bugDescription": "Race condition in multi-threaded environment",
+    "answers": [
+      {
+        "id": "java_5_a",
+        "text": "Use AtomicInteger or synchronized",
+        "isCorrect": true
+      },
+      {
+        "id": "java_5_b",
+        "text": "Make count volatile only",
+        "isCorrect": false
+      },
+      {
+        "id": "java_5_c",
+        "text": "Use long instead of int",
+        "isCorrect": false
+      },
+      {
+        "id": "java_5_d",
+        "text": "Make method static",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_6",
+    "code": "public class Student {\n    private String name;\n    \n    public boolean equals(Object obj) {\n        Student other = (Student) obj;\n        return this.name.equals(other.name);\n    }\n}",
+    "bugDescription": "ClassCastException and NullPointerException risks",
+    "answers": [
+      {
+        "id": "java_6_a",
+        "text": "Add instanceof check and null checks",
+        "isCorrect": true
+      },
+      {
+        "id": "java_6_b",
+        "text": "Override toString() method",
+        "isCorrect": false
+      },
+      {
+        "id": "java_6_c",
+        "text": "Use == for name comparison",
+        "isCorrect": false
+      },
+      {
+        "id": "java_6_d",
+        "text": "Make name field public",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_7",
+    "code": "public class DateCompare {\n    public boolean isSameDay(Date d1, Date d2) {\n        return d1.getDate() == d2.getDate();\n    }\n}",
+    "bugDescription": "Only compares day of month, not full date",
+    "answers": [
+      {
+        "id": "java_7_a",
+        "text": "Compare year, month, and day separately",
+        "isCorrect": true
+      },
+      {
+        "id": "java_7_b",
+        "text": "Use d1 == d2 instead",
+        "isCorrect": false
+      },
+      {
+        "id": "java_7_c",
+        "text": "Convert to strings first",
+        "isCorrect": false
+      },
+      {
+        "id": "java_7_d",
+        "text": "Use getTime() only",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_8",
+    "code": "public class ArrayAccess {\n    public int getElement(int[] arr, int index) {\n        return arr[index];\n    }\n}",
+    "bugDescription": "ArrayIndexOutOfBoundsException not handled",
+    "answers": [
+      {
+        "id": "java_8_a",
+        "text": "Check if index >= 0 && index < arr.length",
+        "isCorrect": true
+      },
+      {
+        "id": "java_8_b",
+        "text": "Use ArrayList instead of array",
+        "isCorrect": false
+      },
+      {
+        "id": "java_8_c",
+        "text": "Wrap in synchronized block",
+        "isCorrect": false
+      },
+      {
+        "id": "java_8_d",
+        "text": "Make method static",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_9",
+    "code": "public class HashCode {\n    private String id;\n    \n    @Override\n    public boolean equals(Object obj) {\n        return ((HashCode) obj).id.equals(this.id);\n    }\n}",
+    "bugDescription": "equals() overridden but hashCode() not implemented",
+    "answers": [
+      {
+        "id": "java_9_a",
+        "text": "Override hashCode() method as well",
+        "isCorrect": true
+      },
+      {
+        "id": "java_9_b",
+        "text": "Remove @Override annotation",
+        "isCorrect": false
+      },
+      {
+        "id": "java_9_c",
+        "text": "Use == instead of equals",
+        "isCorrect": false
+      },
+      {
+        "id": "java_9_d",
+        "text": "Make id field final",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_10",
+    "code": "public class NumberParse {\n    public int parseNumber(String str) {\n        return Integer.parseInt(str);\n    }\n}",
+    "bugDescription": "NumberFormatException not handled",
+    "answers": [
+      {
+        "id": "java_10_a",
+        "text": "Wrap in try-catch for NumberFormatException",
+        "isCorrect": true
+      },
+      {
+        "id": "java_10_b",
+        "text": "Use Double.parseDouble instead",
+        "isCorrect": false
+      },
+      {
+        "id": "java_10_c",
+        "text": "Check if str is null only",
+        "isCorrect": false
+      },
+      {
+        "id": "java_10_d",
+        "text": "Use valueOf() instead of parseInt()",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_11",
+    "code": "public class Singleton {\n    private static Singleton instance;\n    \n    public static Singleton getInstance() {\n        if (instance == null) {\n            instance = new Singleton();\n        }\n        return instance;\n    }\n}",
+    "bugDescription": "Thread-unsafe singleton pattern",
+    "answers": [
+      {
+        "id": "java_11_a",
+        "text": "Use double-checked locking or synchronized",
+        "isCorrect": true
+      },
+      {
+        "id": "java_11_b",
+        "text": "Make getInstance() private",
+        "isCorrect": false
+      },
+      {
+        "id": "java_11_c",
+        "text": "Remove static keyword",
+        "isCorrect": false
+      },
+      {
+        "id": "java_11_d",
+        "text": "Use public constructor",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_12",
+    "code": "public class Switch {\n    public String getDay(int num) {\n        switch(num) {\n            case 1: return \"Monday\";\n            case 2: return \"Tuesday\";\n            default: return \"Sunday\";\n        }\n    }\n}",
+    "bugDescription": "Missing cases 3-7 for complete week",
+    "answers": [
+      {
+        "id": "java_12_a",
+        "text": "Add cases 3-7 or validate input range",
+        "isCorrect": true
+      },
+      {
+        "id": "java_12_b",
+        "text": "Use if-else instead of switch",
+        "isCorrect": false
+      },
+      {
+        "id": "java_12_c",
+        "text": "Remove default case",
+        "isCorrect": false
+      },
+      {
+        "id": "java_12_d",
+        "text": "Make method static",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_13",
+    "code": "public class CloneIssue implements Cloneable {\n    private int[] data;\n    \n    public Object clone() {\n        return super.clone();\n    }\n}",
+    "bugDescription": "Shallow copy - array reference copied, not array content",
+    "answers": [
+      {
+        "id": "java_13_a",
+        "text": "Deep copy: clone.data = data.clone()",
+        "isCorrect": true
+      },
+      {
+        "id": "java_13_b",
+        "text": "Remove Cloneable interface",
+        "isCorrect": false
+      },
+      {
+        "id": "java_13_c",
+        "text": "Make data field final",
+        "isCorrect": false
+      },
+      {
+        "id": "java_13_d",
+        "text": "Use new int[] instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_14",
+    "code": "public class Calculator {\n    public double average(int[] nums) {\n        int sum = 0;\n        for (int n : nums) {\n            sum += n;\n        }\n        return sum / nums.length;\n    }\n}",
+    "bugDescription": "Integer division instead of floating-point division",
+    "answers": [
+      {
+        "id": "java_14_a",
+        "text": "Cast to double: (double) sum / nums.length",
+        "isCorrect": true
+      },
+      {
+        "id": "java_14_b",
+        "text": "Change sum to String",
+        "isCorrect": false
+      },
+      {
+        "id": "java_14_c",
+        "text": "Use BigDecimal for sum",
+        "isCorrect": false
+      },
+      {
+        "id": "java_14_d",
+        "text": "Round the result",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_15",
+    "code": "public class Connection {\n    @Override\n    protected void finalize() {\n        closeConnection();\n    }\n}",
+    "bugDescription": "Relying on finalize() for cleanup (deprecated and unreliable)",
+    "answers": [
+      {
+        "id": "java_15_a",
+        "text": "Use try-with-resources or explicit close()",
+        "isCorrect": true
+      },
+      {
+        "id": "java_15_b",
+        "text": "Make finalize() public",
+        "isCorrect": false
+      },
+      {
+        "id": "java_15_c",
+        "text": "Call System.gc() after use",
+        "isCorrect": false
+      },
+      {
+        "id": "java_15_d",
+        "text": "Add @Deprecated annotation",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_16",
+    "code": "public class Money {\n    private double amount;\n    \n    public void add(double value) {\n        amount += value;\n    }\n}",
+    "bugDescription": "Using double for money (precision issues)",
+    "answers": [
+      {
+        "id": "java_16_a",
+        "text": "Use BigDecimal for financial calculations",
+        "isCorrect": true
+      },
+      {
+        "id": "java_16_b",
+        "text": "Use float instead of double",
+        "isCorrect": false
+      },
+      {
+        "id": "java_16_c",
+        "text": "Round to 2 decimals only",
+        "isCorrect": false
+      },
+      {
+        "id": "java_16_d",
+        "text": "Use long for amount",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_17",
+    "code": "public class Cache {\n    private Map<String, Object> cache = new HashMap<>();\n    \n    public Object get(String key) {\n        return cache.get(key);\n    }\n}",
+    "bugDescription": "No memory limit - potential memory leak",
+    "answers": [
+      {
+        "id": "java_17_a",
+        "text": "Use WeakHashMap or implement eviction policy",
+        "isCorrect": true
+      },
+      {
+        "id": "java_17_b",
+        "text": "Use ArrayList instead of HashMap",
+        "isCorrect": false
+      },
+      {
+        "id": "java_17_c",
+        "text": "Make cache method synchronized",
+        "isCorrect": false
+      },
+      {
+        "id": "java_17_d",
+        "text": "Clear cache on every get",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_18",
+    "code": "public class Password {\n    private String password;\n    \n    public void setPassword(String pwd) {\n        this.password = pwd;\n    }\n}",
+    "bugDescription": "Storing sensitive data as String (immutable and in string pool)",
+    "answers": [
+      {
+        "id": "java_18_a",
+        "text": "Use char[] and clear after use",
+        "isCorrect": true
+      },
+      {
+        "id": "java_18_b",
+        "text": "Encrypt the string first",
+        "isCorrect": false
+      },
+      {
+        "id": "java_18_c",
+        "text": "Make password field final",
+        "isCorrect": false
+      },
+      {
+        "id": "java_18_d",
+        "text": "Use StringBuilder instead",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_19",
+    "code": "public class Loader {\n    public Class loadClass(String name) {\n        return Class.forName(name);\n    }\n}",
+    "bugDescription": "ClassNotFoundException not handled",
+    "answers": [
+      {
+        "id": "java_19_a",
+        "text": "Wrap in try-catch for ClassNotFoundException",
+        "isCorrect": true
+      },
+      {
+        "id": "java_19_b",
+        "text": "Use getClass() instead",
+        "isCorrect": false
+      },
+      {
+        "id": "java_19_c",
+        "text": "Check if name is null",
+        "isCorrect": false
+      },
+      {
+        "id": "java_19_d",
+        "text": "Make method static",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "id": "java_20",
+    "code": "public class DateFormat {\n    private SimpleDateFormat sdf = new SimpleDateFormat(\"yyyy-MM-dd\");\n    \n    public String format(Date date) {\n        return sdf.format(date);\n    }\n}",
+    "bugDescription": "SimpleDateFormat is not thread-safe",
+    "answers": [
+      {
+        "id": "java_20_a",
+        "text": "Use ThreadLocal or DateTimeFormatter (Java 8+)",
+        "isCorrect": true
+      },
+      {
+        "id": "java_20_b",
+        "text": "Make sdf public",
+        "isCorrect": false
+      },
+      {
+        "id": "java_20_c",
+        "text": "Create new instance each time",
+        "isCorrect": false
+      },
+      {
+        "id": "java_20_d",
+        "text": "Use toString() instead",
+        "isCorrect": false
+      }
+    ]
+  }
+]
